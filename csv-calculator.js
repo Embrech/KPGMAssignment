@@ -2,7 +2,9 @@ import { readFileSync } from "fs";
 
 // Example usage:
 const data = loadSalesData("sales.csv");
-displayResults(calculateTotalSales(data), "Total Sales");
+const totalSales = calculateTotalSales(data);
+displayResults(totalSales, "Total Sales");
+displayResults(calculateBestSeller(totalSales), "Best Seller");
 displayResults(calculateTotalQuantity(data), "Total Quantity");
 displayResults(calculateAveragePrice(data), "Average Price");
 
@@ -43,6 +45,19 @@ function calculateTotalSales(salesData) {
   }
 
   return totalSales;
+}
+
+function calculateBestSeller(totalSales) {
+  const bestSeller = {};
+  const entries = Object.entries(totalSales);
+
+  const [product, value] = entries.reduce((max, current) =>
+    current[1] > max[1] ? current : max
+  );
+
+  bestSeller[product] = value;
+
+  return bestSeller;
 }
 
 function calculateTotalQuantity(salesData) {
